@@ -6,6 +6,7 @@
 (define-constant err-not-found (err u101))
 (define-constant err-already-exists (err u102))
 (define-constant err-unauthorized (err u103))
+(define-constant err-invalid-input (err u104))
 
 ;; Data structures
 (define-map authenticated-items
@@ -38,6 +39,7 @@
     verified: true,
     registration-date: stacks-block-height
   }))
+    (asserts! (> (len name) u0) err-invalid-input)
     (map-set brand-registry { brand: tx-sender } brand-data)
     (ok true)
   )
@@ -52,6 +54,9 @@
   (let ((item-id (var-get next-item-id)))
     (asserts! (is-some (map-get? brand-registry { brand: brand })) err-not-found)
     (asserts! (is-none (map-get? authenticated-items { item-id: item-id })) err-already-exists)
+    (asserts! (> (len model) u0) err-invalid-input)
+    (asserts! (> (len serial-number) u0) err-invalid-input)
+    (asserts! (> manufacture-date u0) err-invalid-input)
     
     (map-set authenticated-items
       { item-id: item-id }
