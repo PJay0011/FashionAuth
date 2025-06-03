@@ -36,7 +36,7 @@
   (let ((brand-data {
     name: name,
     verified: true,
-    registration-date: block-height
+    registration-date: stacks-block-height
   }))
     (map-set brand-registry { brand: tx-sender } brand-data)
     (ok true)
